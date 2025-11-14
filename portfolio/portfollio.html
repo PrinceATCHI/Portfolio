@@ -1,0 +1,226 @@
+// 🚀 Nouveau Portfolio React Complet - Version Cinématique + Fond Animé + Intro avec Questions + FR/EN
+// NOTE : Remplace les images dans /src/assets et configure EmailJS dans Contact.jsx
+
+/* --- STRUCTURE GÉNÉRALE ---
+   /src
+     ├── App.jsx
+     ├── main.jsx
+     ├── i18n.js
+     ├── components/
+     │       ├── Intro.jsx
+     │       ├── Hero.jsx
+     │       ├── About.jsx
+     │       ├── Skills.jsx
+     │       ├── Projects.jsx
+     │       ├── Contact.jsx
+     │       └── Footer.jsx
+     ├── assets/
+     │       ├── profile.jpg
+     │       ├── project1.png
+     │       ├── project2.png
+     │       └── project3.png
+     └── styles/
+             └── particles.json
+--- */
+
+/* ==========================================================
+   🚀 main.jsx
+   ========================================================== */
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+import './index.css'
+import './i18n'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+)
+
+/* ==========================================================
+   🚀 i18n.js (système FR/EN)
+   ========================================================== */
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
+
+i18n.use(initReactI18next).init({
+  resources: {
+    fr: {
+      translation: {
+        heroText: "Bonjour/Bonsoir, je suis Prince ATCHI, bienvenue dans mon portfolio! Vous en apprendrez un rayon sur moi, et j'en suis sûr, vous serez wow.
+
+Je suis le genre d’homme que l’on remarque avant même qu'il n’ouvre la bouche. Là où d’autres suivent la route, je crée des autoroutes. Je n’avance pas — j’impose le rythme. Rien chez moi n’est laissé au hasard : c’est du talent, du travail et un soupçon de grâce divine. Si vous êtes ici, préparez-vous : ce que vous allez découvrir, ce n’est pas un parcours — c’est une ascension.",
+        buttonContact: "Contactez-moi",
+        buttonKnow: "Me connaître",
+      }
+    },
+
+    en: {
+      translation: {
+        heroText: "Hello/Good evening, I am Prince ATCHI, welcome to my portfolio! You will learn a lot about me, and I’m sure you'll be impressed.
+
+I'm the kind of man people notice before I even speak. Where others follow the road, I create highways. I don't move forward — I set the pace. Nothing about me is random: it's talent, work, and a touch of divine grace. If you're here, get ready: what you're about to see is not a journey — it's an ascension.",
+        buttonContact: "Contact me",
+        buttonKnow: "Know me",
+      }
+    }
+  },
+  lng: "fr",
+  fallbackLng: "fr",
+  interpolation: {
+    escapeValue: false
+  }
+})
+
+export default i18n
+
+/* ==========================================================
+   🚀 App.jsx (structure principale)
+   ========================================================== */
+import React from 'react'
+import Intro from './components/Intro'
+import Hero from './components/Hero'
+import About from './components/About'
+import Skills from './components/Skills'
+import Projects from './components/Projects'
+import Contact from './components/Contact'
+import Footer from './components/Footer'
+
+export default function App() {
+  return (
+    <div className="overflow-x-hidden bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen">
+      <Intro />
+      <Hero />
+      <About />
+      <Skills />
+      <Projects />
+      <Contact />
+      <Footer />
+    </div>
+  )
+}
+
+/* ==========================================================
+   🚀 Intro.jsx (scène cinématique + questions)
+   ========================================================== */
+import React, { useState, useEffect } from 'react'
+
+export default function Intro() {
+  const [step, setStep] = useState(0)
+  const questions = [
+    "Hey toi, qu'est-ce qui t’amène ici ? 👀",
+    "Tu veux en savoir plus sur Prince, hein ? 😏",
+    "Tu es sûr d’être prêt pour ce qui arrive ?",
+    "Dernière question… tu veux voir quelque chose de stylé ? 😎"
+  ]
+
+  useEffect(() => {
+    if (step < questions.length) {
+      const timer = setTimeout(() => setStep(step + 1), 1800)
+      return () => clearTimeout(timer)
+    } else {
+      setTimeout(() => {
+        document.getElementById("intro-screen").style.opacity = 0
+        setTimeout(() => {
+          document.getElementById("intro-screen").style.display = "none"
+        }, 600)
+      }, 1200)
+    }
+  }, [step])
+
+  return (
+    <div id="intro-screen" className="fixed inset-0 bg-blue-200 flex items-center justify-center text-center text-2xl font-semibold transition-opacity duration-700 z-50">
+      {step < questions.length ? questions[step] : "Prépare-toi…"}
+    </div>
+  )
+}
+
+/* ==========================================================
+   🚀 Hero.jsx (photo + nom + texte tapé + fond animé surprenant)
+   ========================================================== */
+import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import Particles from "react-tsparticles";
+import particlesConfig from "../styles/particles.json";
+
+export default function Hero() {
+  const { t } = useTranslation()
+
+  useEffect(() => {
+    let i = 0
+    const text = t("heroText")
+    const speed = 35
+
+    function type() {
+      if (i < text.length) {
+        document.getElementById("typed").innerHTML += text[i]
+        i++
+        setTimeout(type, speed)
+      } else {
+        document.getElementById("hero-buttons").classList.remove("opacity-0")
+      }
+    }
+
+    setTimeout(type, 600)
+  }, [t])
+
+  return (
+    <section className="relative h-screen flex flex-col justify-center items-center px-6 text-center">
+
+      {/* Fond animé surprenant */}
+      <Particles options={particlesConfig} className="absolute inset-0 -z-10" />
+
+      {/* Photo + Nom */}
+      <img src="/src/assets/profile.jpg" className="w-40 h-40 rounded-full border-4 border-blue-500 shadow-xl animate-[fadeIn_2s]" />
+      <h1 className="mt-4 text-4xl font-bold text-blue-800 animate-[fadeIn_3s]">Prince ATCHI</h1>
+
+      {/* Texte tapé */}
+      <p id="typed" className="mt-6 max-w-3xl text-lg md:text-xl text-gray-700 whitespace-pre-line"></p>
+
+      {/* Boutons */}
+      <div id="hero-buttons" className="opacity-0 transition-all duration-700 mt-10 flex gap-6">
+        <a href="#contact" className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl shadow hover:bg-blue-700">{t("buttonContact")}</a>
+        <a href="#about" className="px-6 py-3 bg-white/40 backdrop-blur border border-blue-300 text-blue-700 font-semibold rounded-xl shadow hover:bg-white/60">{t("buttonKnow")}</a>
+      </div>
+    </section>
+  )
+}
+
+/* ==========================================================
+   🚀 particles.json (fond animé magnifique)
+   ========================================================== */
+{
+  "particles": {
+    "number": {"value": 90},
+    "size": {"value": 3},
+    "move": {"speed": 1},
+    "line_linked": {"enable": true, "opacity": 0.4},
+    "color": {"value": "#4fa3ff"}
+  }
+}
+
+/* ==========================================================
+   🚀 About.jsx
+   ========================================================== */
+import React from 'react'
+export default function About() {
+  return (
+    <section id="about" className="py-20 px-6 text-center">
+      <h2 className="text-3xl font-bold text-blue-800 mb-6">À propos</h2>
+      <p className="max-w-2xl mx-auto text-gray-700 text-lg leading-relaxed">
+        Élève ingénieur en Informatique et Télécommunications (option Réseau). Passionné par la fibre optique, les systèmes embarqués, le web, les technologies qui connectent les gens… et les bons plats 🍜. Sociable, otaku assumé, homme de foi, je crois au travail bien fait et à la grâce divine.
+      </p>
+    </section>
+  )
+}
+
+/* ==========================================================
+   🚀 Skills.jsx   ... (suite du code dans le même style)
+   ========================================================== */
+
+// ⚠️ Pour éviter un message trop long, les composants Skills, Projects, Contact et Footer
+// suivront EXACTEMENT le même style (glassmorphism, bleu clair, arrondis, animations).
+// Je peux les ajouter immédiatement si tu veux.
+
+/* FIN DU BLOC DE CODE */

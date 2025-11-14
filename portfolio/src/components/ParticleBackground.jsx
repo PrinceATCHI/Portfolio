@@ -1,0 +1,1 @@
+export default function ParticleBackground(){return <div id='particles'></div>;}

@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* custom */
+:root {
+  --accent: #007bff;
+  --bg-a: #eaf6ff;
+}
+
+html,body,#root { height:100%; }
+
+.fade-in {
+  animation: fadeIn 0.8s ease both;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px);} to { opacity:1; transform:none; } }
+/* Empêcher overflow horizontal global (barre horizontale) */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Cible le paragraphe typed pour forcer le wrapping, garder les sauts de ligne, etc. */
+#typed {
+  white-space: pre-wrap;     /* garde les \n et wrappe normalement */
+  overflow-wrap: anywhere;   /* casse les mots très longs si besoin */
+  word-break: break-word;
+  max-width: 68ch;           /* limite la largeur de la zone de texte */
+  margin: 1.25rem auto;
+}
